@@ -1,0 +1,61 @@
+Sale_ID,Date,Customer_Name,Product,Category,Quantity,Price_per_Unit,Total_Amount,Payment_Method
+S001,01/06/2025,Ryan Reynolds,Notebook,Stationery,4,40,160,Card
+S002,01/06/2025,Michael Ward,Backpack,Accessories,1,1499,1499,Wallet
+S003,01/06/2025,Laurie Maldonado,Water Bottle,Home & Kitchen,1,250,250,UPI
+S004,01/07/2025,Summer Mitchell,Water Bottle,Home & Kitchen,4,250,1000,Card
+S005,02/06/2025,Jennifer Reyes,Jeans,Clothing,2,999,1998,Card
+S006,02/07/2025,Charles Johnson,Pen Set,Stationery,4,120,480,Card
+S007,02/07/2025,Heather Ramos,Notebook,Stationery,3,40,120,Wallet
+S008,03/06/2025,Angela Garcia,Blender,Home & Kitchen,5,2999,14995,UPI
+S009,03/06/2025,Jean Le,T-Shirt,Clothing,5,499,2495,Card
+S010,03/07/2025,Anthony Weiss,Water Bottle,Home & Kitchen,1,250,250,Card
+S011,04/06/2025,Kelly Turner,Backpack,Accessories,2,1499,2998,UPI
+S012,04/07/2025,Tony Hamilton,Smartphone,Electronics,4,15999,63996,Card
+S013,04/07/2025,Timothy Schwartz,Water Bottle,Home & Kitchen,3,250,750,Wallet
+S014,05/06/2025,Mr. Travis Smith,Pen Set,Stationery,5,120,600,Card
+S015,05/07/2025,Sonya Mcclure,Blender,Home & Kitchen,1,2999,2999,Card
+S016,05/07/2025,Jennifer Gonzales,Notebook,Stationery,5,40,200,Wallet
+S017,05/07/2025,Steven Atkinson DDS,Smartphone,Electronics,2,15999,31998,Cash
+S018,06/07/2025,Michael Beck,Smartphone,Electronics,4,15999,63996,Cash
+S019,06/07/2025,Jay Smith,Water Bottle,Home & Kitchen,3,250,750,Wallet
+S020,06/07/2025,Mr. Benjamin Lambert Jr.,Wireless Mouse,Electronics,1,799,799,Card
+S021,07/06/2025,John Smith,Blender,Home & Kitchen,3,2999,8997,Cash
+S022,07/07/2025,Keith Dixon,Headphones,Electronics,3,1299,3897,Cash
+S023,07/07/2025,John Newton,Smartphone,Electronics,2,15999,31998,Wallet
+S024,08/07/2025,Michael Jackson,Wireless Mouse,Electronics,4,799,3196,Card
+S025,08/07/2025,Gina Sanford,Backpack,Accessories,3,1499,4497,UPI
+S026,09/06/2025,Tara Norton,Blender,Home & Kitchen,5,2999,14995,UPI
+S027,09/06/2025,Patrick Miller,Water Bottle,Home & Kitchen,1,250,250,Card
+S028,10/06/2025,Mrs. Amy Meadows,Notebook,Stationery,5,40,200,Card
+S029,11/06/2025,Melody Lambert,Water Bottle,Home & Kitchen,2,250,500,Cash
+S030,11/06/2025,Jennifer Reed,Pen Set,Stationery,5,120,600,UPI
+S031,11/06/2025,Eric Adams,Wireless Mouse,Electronics,2,799,1598,Wallet
+S032,13/07/2025,Anthony Smith,Wireless Mouse,Electronics,2,799,1598,Card
+S033,13/07/2025,Madison Lopez,T-Shirt,Clothing,5,499,2495,Cash
+S034,16/06/2025,Kelsey Clarke,Wireless Mouse,Electronics,1,799,799,Cash
+S035,16/06/2025,Lindsay Church,Notebook,Stationery,4,40,160,Card
+S036,17/07/2025,Daisy Holmes,Jeans,Clothing,5,999,4995,Card
+S037,17/07/2025,Paul Schneider,Headphones,Electronics,2,1299,2598,Card
+S038,17/07/2025,Austin Gonzales,Pen Set,Stationery,3,120,360,Wallet
+S039,18/06/2025,Juan Davenport,T-Shirt,Clothing,1,499,499,Wallet
+S040,18/06/2025,Troy Harris,Jeans,Clothing,2,999,1998,Wallet
+S041,18/07/2025,John Mckenzie,Smartphone,Electronics,3,15999,47997,Cash
+S042,19/06/2025,Alicia Clark,Pen Set,Stationery,5,120,600,Card
+S043,20/06/2025,Cameron Garcia,Water Bottle,Home & Kitchen,2,250,500,Card
+S044,20/07/2025,John Sanchez,Backpack,Accessories,2,1499,2998,Cash
+S045,21/06/2025,Kristen Cook,Wireless Mouse,Electronics,1,799,799,Cash
+S046,21/06/2025,Edwin Olson,Pen Set,Stationery,3,120,360,Wallet
+S047,21/06/2025,Janice George,Backpack,Accessories,5,1499,7495,Cash
+S048,21/07/2025,Christopher Gilmore,Backpack,Accessories,2,1499,2998,Cash
+S049,24/06/2025,Tanya George,Headphones,Electronics,5,1299,6495,Card
+S050,24/07/2025,Allison Murphy,Jeans,Clothing,5,999,4995,Wallet
+S051,24/07/2025,Samuel Jones,Jeans,Clothing,3,999,2997,Card
+S052,26/06/2025,Justin Morgan,Water Bottle,Home & Kitchen,2,250,500,UPI
+S053,26/06/2025,Timothy Guzman,Smartphone,Electronics,4,15999,63996,UPI
+S054,26/06/2025,Mercedes Boyle,Jeans,Clothing,5,999,4995,UPI
+S055,26/06/2025,Colleen Flores,Smartphone,Electronics,5,15999,79995,Wallet
+S056,28/06/2025,Anthony Rivera,Notebook,Stationery,5,40,200,Wallet
+S057,28/07/2025,Curtis Barajas,T-Shirt,Clothing,2,499,998,Card
+S058,29/07/2025,Mr. Martin Pitts,Blender,Home & Kitchen,2,2999,5998,Cash
+S059,30/06/2025,Darren Hines,Backpack,Accessories,2,1499,2998,Cash
+S060,30/07/2025,Ryan Whitaker,Blender,Home & Kitchen,3,2999,8997,Card
