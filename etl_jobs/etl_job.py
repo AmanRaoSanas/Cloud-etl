@@ -1,6 +1,8 @@
 import pandas as pd
-import datetime
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO, format= '%(asctime)s - %(levelname)s - %(message)s')
 
 # Absolute project path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))  # This gets the project root (cloud-ETL)
@@ -11,7 +13,12 @@ output_path = os.path.join(project_root, 'data/processed/cleaned_sales_data.csv'
 
 os.makedirs(os.path.dirname(output_path), exist_ok= True)
 
-df = pd.read_csv(input_path)
+try:
+    df = pd.read_csv(input_path)
+    logging.info(f"File loaded successfully {input_path}")
+except Exception as e:
+    logging.error(f"File Not loaded successfully {input_path}")
+    exit(1)
 
 df = df.dropna()
 
@@ -26,4 +33,4 @@ sorted_df["Sale_ID"] = [f"S{i:03}" for i in range (1, len(sorted_df)+1)]
 
 sorted_df.to_csv(output_path, index=False)
 
-print(f"ETL Completed. Cleaned data written to: {output_path}")
+logging.info(f"ETL Completed. Cleaned data written to: {output_path}")
