@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS ETL Pipeline - S3 → Lambda → S3 → Athena (CloudFormation IaC)
+
+Resources:
+
+  # S3 Bucket for Raw Data (Input)
+  RawDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: aws-etl-raw-data-bucket
+
+  # S3 Bucket for Clean Data (Output)
+  CleanDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: aws-etl-clean-data-bucket
