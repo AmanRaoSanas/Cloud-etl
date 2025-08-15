@@ -1,0 +1,56 @@
+name: Deploy ETL Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: ap-south-1
+  STACK_NAME: etl-pipeline
+  ZIP_BUCKET: aman-lambda-package
+  ZIP_KEY: lambda-deploy.zip
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies for Lambda
+        run: |
+          cd etl_jobs
+          mkdir -p package
+          pip install -r requirements.txt -t package/
+          cp lambda_etl.py package/
+          cd package
+          zip -r ../lambda-deploy.zip .
+          rm -rf package/
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload Lambda ZIP to S3
+        run: |
+          aws s3 cp etl_jobs/lambda-deploy.zip s3://${{ env.ZIP_BUCKET }}/${{ env.ZIP_KEY }}
+
+      - name: Deploy CloudFormation Stack
+        run: |
+          aws cloudformation deploy \
+            --template-file cloudformation/template.yaml \
+            --stack-name ${{ env.STACK_NAME }} \
+            --parameter-overrides \
+              LambdaZipS3Bucket=${{ env.ZIP_BUCKET }} \
+              LambdaZipKey=${{ env.ZIP_KEY }} \
+            --capabilities CAPABILITY_NAMED_IAM
