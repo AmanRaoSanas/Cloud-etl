@@ -34,3 +34,5 @@ sorted_df["Sale_ID"] = [f"S{i:03}" for i in range (1, len(sorted_df)+1)]
 sorted_df.to_csv(output_path, index=False)
 
 logging.info(f"ETL Completed. Cleaned data written to: {output_path}")
+
+
