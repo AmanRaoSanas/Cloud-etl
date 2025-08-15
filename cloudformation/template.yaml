@@ -61,22 +61,6 @@ Resources:
       Principal: s3.amazonaws.com
       SourceArn: !GetAtt RawDataBucket.Arn
 
-  ### S3 Event Notification (decoupled from bucket) ###
-  S3BucketNotification:
-    Type: AWS::S3::BucketNotification
-    DependsOn: LambdaInvokePermission
-    Properties:
-      Bucket: !Ref RawDataBucket
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: s3:ObjectCreated:*
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: ".csv"
-            Function: !GetAtt ETLLambdaFunction.Arn
-
 Outputs:
   BucketName:
     Description: "S3 bucket for raw data"
