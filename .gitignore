@@ -17,4 +17,4 @@ venv/
 .DS_Store   # macOS
 Thumbs.db   # Windows
 
-prompt.txt
+conf.txt
