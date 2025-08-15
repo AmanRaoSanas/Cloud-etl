@@ -7,7 +7,7 @@ Resources:
   RawDataBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: etl-pipeline-raw-data
+      BucketName: etl-pipeline-raw-data-1
 
   ### IAM Role for Lambda ###
   LambdaExecutionRole:
