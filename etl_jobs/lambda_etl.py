@@ -2,14 +2,17 @@ import boto3
 import io
 import logging
 import pandas as pd
+import os
 
 logging.basicConfig(level=logging.INFO, format= '%(asctime)s - %(levelname)s - %(message)s')
 
 def lambda_handler(event, context):
     s3 = boto3.client('s3')
 
-    raw_bucket = 'pass_none'
-    clean_bucket = 'pass_none'
+    # Get bucket name from event trigger
+    raw_bucket = event['Records'][0]['s3']['bucket']['name']
+    clean_bucket = os.environ.get("CLEAN_BUCKET")
+    key = event['Records'][0]['s3']['object']['key']
 
     try:
         key = event['Records'][0]['s3']['object']['key']
@@ -28,7 +31,7 @@ def lambda_handler(event, context):
         df['Date'] = df['Date'].dt.strftime('%d/%m/%Y')
 
         df = df.sort_values(by='Date', ascending= True)
-        df['Sale_ID'] = ["fS{i:03}" for i in range(1, len(df)+1)]
+        df['Sale_ID'] = [f"S{i:03}" for i in range(1, len(df)+1)]
 
         csv_buffer = io.StringIO()
         df.to_csv(csv_buffer, index=False)
