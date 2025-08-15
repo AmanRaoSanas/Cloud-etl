@@ -9,6 +9,12 @@ Resources:
     Properties:
       BucketName: etl-pipeline-raw-data-1
 
+  ### S3 Bucket for Cleaned Data ###
+  CleanedDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "etl-pipeline-cleaned-data-1"
+
   ### IAM Role for Lambda ###
   LambdaExecutionRole:
     Type: AWS::IAM::Role
@@ -32,6 +38,7 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: "arn:aws:logs:*:*:*"
+
               - Effect: Allow
                 Action:
                   - s3:GetObject
@@ -39,6 +46,12 @@ Resources:
                 Resource:
                   - !GetAtt RawDataBucket.Arn
                   - !Sub "${RawDataBucket.Arn}/*"
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                Resource:
+                  - !GetAtt CleanedDataBucket.Arn
+                  - !Sub "${CleanedDataBucket.Arn}/*"
 
   ### Lambda Function ###
   ETLLambdaFunction:
@@ -51,6 +64,9 @@ Resources:
       Code:
         S3Bucket: aman-lambda-package
         S3Key: lambda-deploy.zip
+      Environment:
+        Variables:
+          CLEAN_BUCKET: !Ref CleanedDataBucket
 
   ### Lambda Permission for S3 ###
   LambdaInvokePermission:
