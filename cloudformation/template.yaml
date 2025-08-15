@@ -1,28 +1,72 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: >
-  Serverless ETL Pipeline:
-  - S3 (raw) → Lambda (ETL using pandas) → S3 (clean)
-  - Triggered on CSV upload
-  - Infra via CloudFormation
-
-Parameters:
-  LambdaZipS3Bucket:
-    Type: String
-    Description: Name of S3 bucket where lambda-deploy.zip is uploaded
-
-  LambdaZipKey:
-    Type: String
-    Description: Path (key) to lambda-deploy.zip file inside the above bucket
+AWSTemplateFormatVersion: "2010-09-09"
+Description: ETL pipeline with S3 trigger and Lambda
 
 Resources:
 
+  ### S3 Bucket for Raw Data ###
   RawDataBucket:
     Type: AWS::S3::Bucket
-    DependsOn:
-      - ETLLambdaFunction
-      - LambdaInvokePermission
     Properties:
-      BucketName: !Sub "${AWS::StackName}-raw-data"
+      BucketName: etl-pipeline-raw-data
+
+  ### IAM Role for Lambda ###
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: etl-pipeline-lambda-execution-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaS3AccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:ListBucket
+                Resource:
+                  - !GetAtt RawDataBucket.Arn
+                  - !Sub "${RawDataBucket.Arn}/*"
+
+  ### Lambda Function ###
+  ETLLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: etl-pipeline-etl-function
+      Runtime: python3.9
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Handler: lambda_etl.lambda_handler
+      Code:
+        S3Bucket: aman-lambda-package
+        S3Key: lambda-deploy.zip
+
+  ### Lambda Permission for S3 ###
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ETLLambdaFunction
+      Action: lambda:InvokeFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !GetAtt RawDataBucket.Arn
+
+  ### S3 Event Notification (decoupled from bucket) ###
+  S3BucketNotification:
+    Type: AWS::S3::BucketNotification
+    DependsOn: LambdaInvokePermission
+    Properties:
+      Bucket: !Ref RawDataBucket
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: s3:ObjectCreated:*
@@ -33,58 +77,11 @@ Resources:
                     Value: ".csv"
             Function: !GetAtt ETLLambdaFunction.Arn
 
-  CleanDataBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Sub "${AWS::StackName}-clean-data"
+Outputs:
+  BucketName:
+    Description: "S3 bucket for raw data"
+    Value: !Ref RawDataBucket
 
-  LambdaExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Sub "${AWS::StackName}-lambda-role"
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: S3AndLogsAccess
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                  - s3:GetObject
-                  - s3:PutObject
-                Resource:
-                  - !Sub "arn:aws:s3:::${AWS::StackName}-raw-data/*"
-                  - !Sub "arn:aws:s3:::${AWS::StackName}-clean-data/*"
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource: "*"
-
-  ETLLambdaFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      FunctionName: !Sub "${AWS::StackName}-etl-function"
-      Handler: lambda_etl.lambda_handler
-      Runtime: python3.9
-      Timeout: 60
-      MemorySize: 256
-      Role: !GetAtt LambdaExecutionRole.Arn
-      Code:
-        S3Bucket: !Ref LambdaZipS3Bucket
-        S3Key: !Ref LambdaZipKey
-
-  LambdaInvokePermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      FunctionName: !Ref ETLLambdaFunction
-      Action: lambda:InvokeFunction
-      Principal: s3.amazonaws.com
-      SourceArn: !Sub "arn:aws:s3:::${AWS::StackName}-raw-data"
+  LambdaFunction:
+    Description: "ETL Lambda function"
+    Value: !Ref ETLLambdaFunction
