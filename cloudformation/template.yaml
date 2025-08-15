@@ -18,6 +18,9 @@ Resources:
 
   RawDataBucket:
     Type: AWS::S3::Bucket
+    DependsOn:
+      - ETLLambdaFunction
+      - LambdaInvokePermission
     Properties:
       BucketName: !Sub "${AWS::StackName}-raw-data"
       NotificationConfiguration:
@@ -29,7 +32,6 @@ Resources:
                   - Name: suffix
                     Value: ".csv"
             Function: !GetAtt ETLLambdaFunction.Arn
-
 
   CleanDataBucket:
     Type: AWS::S3::Bucket
@@ -70,8 +72,8 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: !Sub "${AWS::StackName}-etl-function"
-      Handler: lambda_etl.lambda_handler     # Change if file name is different
-      Runtime: python3.9                     # or 3.10 if you're using that
+      Handler: lambda_etl.lambda_handler
+      Runtime: python3.9
       Timeout: 60
       MemorySize: 256
       Role: !GetAtt LambdaExecutionRole.Arn
